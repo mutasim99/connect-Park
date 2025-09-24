@@ -6,9 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@radix-ui/react-label'
 import { Input } from '@/components/ui/input'
 import { Eye, EyeClosed, Upload } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import LoadingSpinner from '@/app/components/LoadingSpinner'
 
 export default function RegisterForm() {
-    const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+    const [imageSize, setImageSize] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [loading, setLoading] = useState(false)
 
 
     const {
@@ -67,7 +72,7 @@ export default function RegisterForm() {
                                 {...register('password', { required: true })}
                                 name='password'
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Enter your email"
+                                placeholder="Enter your password"
                                 className="rounded-full border border-purple-300/50 bg-white/50 dark:bg-white/10 text-gray-900 "
                             />
                             <button type='button' className='absolute right-3 bottom-4' onClick={() => setShowPassword(!showPassword)}>
@@ -91,10 +96,37 @@ export default function RegisterForm() {
                                     name="image"
                                     type='file'
                                     accept='image/*'
+                                    {...register("image", {
+                                        onChange: (e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                setPreview(URL.createObjectURL(file));
+                                                setImageSize(file.size);
+                                            }
+                                        },
+                                    })}
                                     className='hidden'
                                 />
                             </div>
+                            {
+                                preview && (
+                                    <div className='mt-3 flex items-center gap-2'>
+                                        <img
+                                            src={preview}
+                                            alt="preview"
+                                            className='h-24 w-24 rounded-full object-cover border-2 border-[#B54C4E] shadow-md'
+                                        />
+                                        <p>Image size: {Math.round(imageSize / 1024)}kb</p>
+                                    </div>
+                                )
+                            }
                         </div>
+                        <Button
+                            type='submit'
+                            className="w-full rounded-full  bg-gradient-to-r from-[#2F6260] to-[#3A7D7A] hover:from-[#3A7D7A] hover:to-[#2F6260]  text-white font-semibold shadow-lg mt-2 cursor-pointer"
+                        >
+                            {loading ? <LoadingSpinner></LoadingSpinner> : 'Register'}
+                        </Button>
                     </form>
                 </CardContent>
             </Card>

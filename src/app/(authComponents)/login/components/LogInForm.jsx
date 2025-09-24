@@ -26,7 +26,7 @@ export default function LogInForm() {
             transition={{ duration: .7 }}
             className='w-full max-w-md'
         >
-            <Card className='relative backdrop-blur-md bg-white/10 dark:bg-black/20 border border-purple-400/30 shadow-xl rounded-2xl'>
+            <Card className='relative backdrop-blur-md bg-white/10 dark:bg-black/20 border border-slate-400/30 shadow-xl rounded-2xl'>
                 <CardHeader>
                     <CardTitle className='text-center text-2xl font-bold text-gray-900 dark:text-white'>
                         LogIn now!!
@@ -61,7 +61,7 @@ export default function LogInForm() {
                         <div className='mt-4'>
                             <Button
                                 type="submit"
-                                className="w-full rounded-full bg-gradient-to-r from-slate-500 to-slate-700 hover:from-slate-600 hover:to-slate-800 text-white font-semibold shadow-lg cursor-pointer"
+                                className="w-full rounded-full bg-gradient-to-r from-[#084350] to-[#2F6260] hover:from-[#2F6260] hover:to-[#084350] text-white font-semibold shadow-lg cursor-pointer"
                             >
                                 Login
                             </Button>
