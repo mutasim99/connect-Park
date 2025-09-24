@@ -1,23 +1,42 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from "motion/react"
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
 import { Button } from '@/components/ui/button'
 import { useForm } from "react-hook-form"
+import { signIn } from 'next-auth/react'
+import LoadingSpinner from '@/app/components/LoadingSpinner'
+import { useRouter } from 'next/navigation'
 
 export default function LogInForm() {
-
+    const [loading, setLoading] = useState(false);
+    const router = useRouter()
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+
+        try {
+            setLoading(true);
+            const response = await signIn('credentials', {
+                email: data.email,
+                password: data.password,
+                callbackUrl: '/',
+                redirect: false
+            })
+            if (response.ok) {
+                router.push('/')
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <motion.div
@@ -63,7 +82,7 @@ export default function LogInForm() {
                                 type="submit"
                                 className="w-full rounded-full bg-gradient-to-r from-[#084350] to-[#2F6260] hover:from-[#2F6260] hover:to-[#084350] text-white font-semibold shadow-lg cursor-pointer"
                             >
-                                Login
+                                {loading ? <LoadingSpinner></LoadingSpinner> : 'LogIn'}
                             </Button>
                         </div>
                     </form>

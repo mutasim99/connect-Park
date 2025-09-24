@@ -1,12 +1,14 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import logoImg from '../../../public/assets/image/logo.png'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image';
 import Link from 'next/link';
 export default function Navbar() {
+    const session = useSession();
+    console.log(session);
     const pathname = usePathname();
-    console.log(pathname.includes('/register'));
-    if ( !pathname.includes('/register') && !pathname.includes('/login') ) {
+    if (!pathname.includes('/register') && !pathname.includes('/login')) {
         return (
             <div className='w-full flex justify-between items-center px-6 py-2 bg-neutral-50/30 fixed z-30'>
                 <div className='flex items-center gap-2'>

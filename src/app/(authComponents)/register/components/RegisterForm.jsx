@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Eye, EyeClosed, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import LoadingSpinner from '@/app/components/LoadingSpinner'
+import { imageUpload } from '@/lib/imageUpload'
+import { registerUser } from '@/app/actions/auth/registerUser'
 
 export default function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -22,8 +24,27 @@ export default function RegisterForm() {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        try {
+            setLoading(true);
+            let imageUrl = '';
+            if (data?.image && data?.image[0]) {
+                imageUrl = await imageUpload(data?.image[0])
+            }
+
+            const payload = {
+                name: data?.name,
+                email: data?.email,
+                password: data?.password,
+                image: imageUrl
+            }
+            const result = await registerUser(payload);
+            console.log(result);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
     }
     return (
         <motion.div
