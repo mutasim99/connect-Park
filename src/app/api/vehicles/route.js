@@ -6,6 +6,11 @@ import { NextResponse } from "next/server";
 export const POST = async (req) => {
     try {
         const { vehicleType, licensePlate } = await req.json();
+
+        if (!vehicleType || !licensePlate) {
+            return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        }
+
         const slots = await (await dbConnect(collectionNameObj.settingsCollection)).findOne({ _id: 'slots-info' });
         const rates = await (await dbConnect(collectionNameObj.ratesCollection)).findOne({ vehicleType });
         if (!rates) {
@@ -26,7 +31,7 @@ export const POST = async (req) => {
                 { $inc: { availableSlots: - 1 } })
         }
 
-        NextResponse.json({
+        return NextResponse.json({
             success: true,
             status,
             insertedId: result.insertedId,

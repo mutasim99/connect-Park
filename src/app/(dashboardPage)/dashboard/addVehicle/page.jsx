@@ -1,9 +1,10 @@
 import React from 'react'
+import AddVehicleForm from './components/AddVehicleForm'
 
 export default function AddVehicle() {
   return (
-    <div>
-      <h2 className='text-2xl'>Add a vehicle</h2>
+    <div className='max-w-11/12 mx-auto '>
+     <AddVehicleForm></AddVehicleForm>
     </div>
   )
 }
