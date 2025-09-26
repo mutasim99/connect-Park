@@ -21,7 +21,15 @@ export const POST = async (req) => {
         if (slots.availableSlots <= 0) {
             status = 'waiting'
         };
-        const vehicleData = { vehicleType, licensePlate, entryTime: new Date(), exitTime: null, status, chargesPerHour: rates.rate };
+        const vehicleData = {
+            vehicleType,
+            licensePlate,
+            entryTime: new Date(),
+            parkedTime: status === "parked" ? new Date() : null,
+            exitTime: null,
+            status,
+            chargesPerHour: rates.rate
+        };
 
 
         const result = await (await dbConnect(collectionNameObj.vehiclesCollection)).insertOne(vehicleData);
