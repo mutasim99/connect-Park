@@ -40,4 +40,19 @@ export const POST = async (req) => {
         console.log(error);
         return NextResponse.json({ error: "Server error" }, { status: 500 });
     }
+};
+
+export const GET = async () => {
+    try {
+        const vehicleCollection = await dbConnect(collectionNameObj.vehiclesCollection);
+
+        const vehicle = await vehicleCollection
+            .find({ exitTime: null })
+            .sort({ entryTime: -1 })
+            .toArray();
+        return NextResponse.json(vehicle)
+    } catch (err) {
+        console.log(err);
+        return NextResponse.json({ error: 'server error' }, { status: 500 });
+    }
 }
