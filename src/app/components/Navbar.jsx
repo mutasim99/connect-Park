@@ -4,8 +4,10 @@ import logoImg from '../../../public/assets/image/logo.png'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image';
 import Link from 'next/link';
+import { signOut } from "next-auth/react"
 export default function Navbar() {
     const session = useSession();
+    console.log(session);
     const pathname = usePathname();
     if (!pathname.includes('/register') && !pathname.includes('/login') && !pathname.includes('/dashboard')) {
         return (
@@ -28,9 +30,17 @@ export default function Navbar() {
                         <li><Link href='/about'>About</Link></li>
                     </ul>
                 </div>
-                <div className='flex items-center gap-2.5 justify-end'>
-                    <Link href='/login' className='px-3 py-2 rounded-lg bg-gray-400'>Login</Link>
-                    <Link href='/register' className='px-3 py-2 rounded-lg bg-gray-400'>Register</Link>
+                <div>
+                    {
+                        session && session?.user ? <div>
+                            <button className='px-3 py-2 rounded-lg bg-gray-400' onClick={() => signOut()}>Sign Out</button>
+                        </div> : <div className='flex items-center gap-2.5 justify-end'>
+                            <Link href='/login' className='px-3 py-2 rounded-lg bg-gray-400'>Login</Link>
+                            <Link href='/register' className='px-3 py-2 rounded-lg bg-gray-400'>Register</Link>
+                        </div>
+                    }
+
+
                 </div>
             </div>
         )

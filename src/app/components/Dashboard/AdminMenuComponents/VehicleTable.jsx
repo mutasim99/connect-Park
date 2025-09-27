@@ -31,10 +31,14 @@ export default function VehicleTable() {
     })
 
     const handleExit = async (vehicleId) => {
-        setOpen(true)
-        const res = await exitMutation.mutateAsync(vehicleId);
-        setExitResult(res);
-        selectedVehicle(vehicleId);
+        try {
+            const res = await exitMutation.mutateAsync(vehicleId);
+            setExitResult(res);
+            setSelectedVehicle(vehicleId);
+            setOpen(true);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const columns = [

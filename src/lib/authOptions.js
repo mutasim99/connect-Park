@@ -37,14 +37,29 @@ export const authOptions = {
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
             const { providerAccountId, provider } = account;
-            const { name, email: user_email, image } = user;
-            const payload = { name, email: user_email, image, providerAccountId, provider }
+            const { name, email: user_email, image, role } = user;
+            const payload = { name, email: user_email, image, providerAccountId, provider, role }
             const userCollection = await dbConnect(collectionNameObj.userCollection);
             const isExistingUser = await userCollection.findOne({ providerAccountId });
             if (!isExistingUser) {
                 const result = await userCollection.insertOne(payload)
             }
             return true
+        },
+
+        async jwt({ token, user }) {
+            if (user) {
+                token.role = user.role || 'user';
+            }
+            return token;
+        },
+
+        async session({ session, token }) {
+            if (token) {
+                session.user.role = token.role
+            }
+            return session
         }
+
     }
 }
