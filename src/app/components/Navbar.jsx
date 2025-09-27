@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { signOut } from "next-auth/react"
 export default function Navbar() {
     const session = useSession();
-    console.log(session);
+    console.log(session.status);
     const pathname = usePathname();
     if (!pathname.includes('/register') && !pathname.includes('/login') && !pathname.includes('/dashboard')) {
         return (
@@ -32,7 +32,7 @@ export default function Navbar() {
                 </div>
                 <div>
                     {
-                        session && session?.user ? <div>
+                        session && session?.status === 'authenticated' ? <div>
                             <button className='px-3 py-2 rounded-lg bg-gray-400' onClick={() => signOut()}>Sign Out</button>
                         </div> : <div className='flex items-center gap-2.5 justify-end'>
                             <Link href='/login' className='px-3 py-2 rounded-lg bg-gray-400'>Login</Link>
