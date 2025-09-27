@@ -41,6 +41,9 @@ export default function VehicleTable() {
         }
     }
 
+    const handleUpdateStatus = async (vehicleId) => {
+
+    }
     const columns = [
         {
             accessorKey: 'name',
@@ -107,6 +110,21 @@ export default function VehicleTable() {
                         disabled={exitMutation.isPending}
                     >
                         Exit
+                    </Button>
+                </div>
+            )
+        },
+        {
+
+            header: 'Update',
+            cell: ({ row }) => (
+                <div className='flex justify-center items-center'>
+                    <Button
+                        size='sm'
+                        className='bg-green-500 cursor-pointer'
+                        onClick={() => handleUpdateStatus(row.original._id)}
+                    >
+                        update
                     </Button>
                 </div>
             )

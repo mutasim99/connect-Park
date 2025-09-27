@@ -2,7 +2,7 @@
 import { collectionNameObj, dbConnect } from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
 
-
+/* post a vehicle */
 export const POST = async (req) => {
     try {
         const { vehicleType, licensePlate, name, number, email } = await req.json();
@@ -64,7 +64,7 @@ export const POST = async (req) => {
         return NextResponse.json({ error: "Server error" }, { status: 500 });
     }
 };
-
+/* get all vehicle */
 export const GET = async () => {
     try {
         const vehicleCollection = await dbConnect(collectionNameObj.vehiclesCollection);
@@ -77,5 +77,54 @@ export const GET = async () => {
     } catch (err) {
         console.log(err);
         return NextResponse.json({ error: 'server error' }, { status: 500 });
+    }
+};
+
+/* Update vehicle status */
+
+export const PATCH = async (req) => {
+    try {
+        const { token } = await req.json();
+        if (!token) {
+            NextResponse.json({ error: 'Missing token' }, { status: 400 })
+        }
+
+        const vehicleCollection = await dbConnect(collectionNameObj.vehiclesCollection);
+        const settingsCollection = await dbConnect(collectionNameObj.vehiclesCollection);
+
+        const vehicle = await vehicleCollection.findOne({ token });
+        if (!vehicle) {
+            NextResponse.json({ error: 'Vehicle is not found' }, { status: 404 })
+        }
+
+        if (vehicle.status !== 'waiting') {
+            NextResponse.json({ error: 'You can not update this' }, { status: 400 })
+        }
+
+        const slots = await settingsCollection.findOne({ _id: 'slots-info' })
+
+        if (slots.availableSlots <= 0) {
+            NextResponse.json({ error: 'No available slots at this moments' }, { status: 400 })
+        }
+
+        await vehicleCollection.updateOne(
+            { token },
+            {
+                $set: {
+                    status: "parked",
+                    parkedTime: new Date()
+                }
+            }
+        );
+
+        /* decrement available slots */
+        await settingsCollection.updateOne(
+            { _id: "slots-info" },
+            { $inc: { availableSlots: -1 } }
+
+        )
+        return NextResponse.json({ success: true, newStatus: 'parked' })
+    } catch (error) {
+        console.log(error);
     }
 }
