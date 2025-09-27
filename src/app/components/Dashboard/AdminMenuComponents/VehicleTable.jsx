@@ -5,6 +5,7 @@ import { getCoreRowModel, useReactTable, flexRender } from '@tanstack/react-tabl
 import axios from 'axios'
 import React, { useState } from 'react'
 import ExitSummeryModal from './ExitSummeryModal'
+import Swal from 'sweetalert2'
 
 export default function VehicleTable() {
     const queryClient = useQueryClient();
@@ -42,7 +43,24 @@ export default function VehicleTable() {
     }
 
     const handleUpdateStatus = async (vehicleId) => {
+        try {
+            const { data } = await axios.patch('/api/vehicles', { token: vehicleId });
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: `Vehicle status updated to ${data.newStatus}`,
+            });
 
+            queryClient.invalidateQueries(["vehicle"]);
+            queryClient.invalidateQueries(["slots"]);
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response?.data?.error || "Something went wrong",
+            });
+        }
     }
     const columns = [
         {
@@ -86,8 +104,9 @@ export default function VehicleTable() {
             accessorKey: 'parkedTime',
             header: 'parked Time',
             cell: ({ row }) => {
-                const parkedEntry = new Date(row.original.parkedTime);
-                const formatted = parkedEntry.toLocaleString('en-GB', {
+                const parkedEntry = (row.original.parkedTime);
+                if (!parkedEntry) return <span>-</span>;
+                const formatted =new Date(parkedEntry).toLocaleString('en-GB', {
                     day: "2-digit",
                     month: '2-digit',
                     year: "2-digit",
@@ -122,7 +141,7 @@ export default function VehicleTable() {
                     <Button
                         size='sm'
                         className='bg-green-500 cursor-pointer'
-                        onClick={() => handleUpdateStatus(row.original._id)}
+                        onClick={() => handleUpdateStatus(row.original.token)}
                     >
                         update
                     </Button>

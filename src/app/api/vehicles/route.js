@@ -86,25 +86,25 @@ export const PATCH = async (req) => {
     try {
         const { token } = await req.json();
         if (!token) {
-            NextResponse.json({ error: 'Missing token' }, { status: 400 })
+           return NextResponse.json({ error: 'Missing token' }, { status: 400 })
         }
 
         const vehicleCollection = await dbConnect(collectionNameObj.vehiclesCollection);
-        const settingsCollection = await dbConnect(collectionNameObj.vehiclesCollection);
+        const settingsCollection = await dbConnect(collectionNameObj.settingsCollection);
 
         const vehicle = await vehicleCollection.findOne({ token });
         if (!vehicle) {
-            NextResponse.json({ error: 'Vehicle is not found' }, { status: 404 })
+          return  NextResponse.json({ error: 'Vehicle is not found' }, { status: 404 })
         }
 
         if (vehicle.status !== 'waiting') {
-            NextResponse.json({ error: 'You can not update this' }, { status: 400 })
+           return NextResponse.json({ error: 'You can not update this' }, { status: 400 })
         }
 
         const slots = await settingsCollection.findOne({ _id: 'slots-info' })
 
         if (slots.availableSlots <= 0) {
-            NextResponse.json({ error: 'No available slots at this moments' }, { status: 400 })
+           return NextResponse.json({ error: 'No available slots at this moments' }, { status: 400 })
         }
 
         await vehicleCollection.updateOne(

@@ -7,7 +7,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            <div className='bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 md:p-8 mb-8 flex flex-col md:flex-row items-center justify-between transition-all duration-300 w-full md:max-w-11/12 mx-auto'>
+            <div className='bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 md:p-8 mb-8 flex flex-col md:flex-row items-center justify-between transition-all duration-300 w-full md:max-w-11/12 mx-auto '>
                 <div className='flex-1 text-center md:text-left mb-4 md:mb-0'>
                     <h2 className='text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2'>
                         welcome to connect park

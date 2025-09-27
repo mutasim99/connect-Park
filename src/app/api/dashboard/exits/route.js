@@ -28,7 +28,8 @@ export const POST = async (req) => {
         let minutes = 0;
 
         if (vehicle.status === 'parked') {
-            const durationMs = exitTime - new Date(vehicle.entryTime);
+            const startTime = vehicle.parkedTime ? new Date(vehicle.parkedTime) : new Date(vehicle.entryTime)
+            const durationMs = exitTime - startTime;
             const totalMinutes = Math.floor(durationMs / (60 * 1000));
             hours = Math.floor(totalMinutes / 60);
             minutes = totalMinutes % 60;

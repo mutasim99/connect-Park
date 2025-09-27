@@ -12,7 +12,7 @@ export default function OverviewComponents() {
             const { data } = await axios.get('/api/dashboard/slots')
             return data
         },
-        refetchInterval: 5000,
+        // refetchInterval: 5000,
     })
 
     return (
