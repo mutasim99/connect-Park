@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { signOut } from "next-auth/react"
 export default function Navbar() {
     const session = useSession();
-    console.log(session.status);
     const pathname = usePathname();
     if (!pathname.includes('/register') && !pathname.includes('/login') && !pathname.includes('/dashboard')) {
         return (
@@ -26,7 +25,7 @@ export default function Navbar() {
                     <ul className='flex justify-center items-center gap-4'>
                         <li><Link href='/'>Home</Link></li>
                         <li><Link href='/services'>Services</Link></li>
-                        <li><Link href='/dashboard'>Dashboard</Link></li>
+                        <li><Link href='/dashboard/my-profile'>Dashboard</Link></li>
                         <li><Link href='/about'>About</Link></li>
                     </ul>
                 </div>
