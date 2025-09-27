@@ -5,9 +5,10 @@ import vehicleLottie from '../../../../../../public/assets/LottieFiles/Shop Car.
 import Lottie from 'lottie-react'
 import { Label } from '@radix-ui/react-label'
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import axios from "axios"
 import { CgSpinnerAlt } from "react-icons/cg";
+import Swal from "sweetalert2"
+
 
 export default function AddVehicleForm() {
     const [loading, setLoading] = useState(false)
@@ -21,13 +22,22 @@ export default function AddVehicleForm() {
         try {
             setLoading(true);
             const res = await axios.post('/api/vehicles', data)
-            const result =  res.data
+            const result = res.data
+            if (result.insertedId) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Add a car successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
             console.log(result);
-           
+
         } catch (error) {
             console.log(error);
         } finally {
-            
+
             setLoading(false);
         }
     }
@@ -37,8 +47,47 @@ export default function AddVehicleForm() {
                 <Lottie animationData={vehicleLottie}></Lottie>
             </div>
             <div className='flex-1 bg-white py-10 px-6 rounded shadow-lg'>
-                <h1 className="text-lg font-bold mb-4 bg-gradient-to-r from-purple-500 to-pink-400 bg-clip-text text-transparent text-center">Add Vehicle</h1>
+                <h1 className="text-3xl font-bold mb-4  bg-[radial-gradient(at_40%_80%,#34d399,#60a5fa,#8b5cf6_90%)] bg-clip-text text-transparent text-center">Add Vehicle</h1>
                 <form className='space-y-4' onSubmit={handleSubmit(onSubmit)}>
+                    {/* customer name */}
+                    <div className="space-y-2">
+                        <Label>
+                            customer Name
+                        </Label>
+                        <Input
+                            type='text'
+                            name='name'
+                            {...register('name', { required: true })}
+                            className='w-full rounded-lg p-2 bg-gray-300'
+                            placeholder='please enter customer Name'
+                        />
+                    </div>
+                    {/* customer email */}
+                    <div className="space-y-2">
+                        <Label>
+                            customer email
+                        </Label>
+                        <Input
+                            type='email'
+                            name='email'
+                            {...register('email')}
+                            className='w-full rounded-lg p-2 bg-gray-300'
+                            placeholder='please enter customer email'
+                        />
+                    </div>
+                    {/* customer number */}
+                    <div className="space-y-2">
+                        <Label>
+                            contact number
+                        </Label>
+                        <Input
+                            type='number'
+                            name='number'
+                            {...register('number', { required: true })}
+                            className='w-full rounded-lg p-2 bg-gray-300'
+                            placeholder='please enter contact number'
+                        />
+                    </div>
                     {/* vehicle types */}
                     <div className='space-y-2'>
                         <Label>

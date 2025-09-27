@@ -43,6 +43,14 @@ export default function VehicleTable() {
 
     const columns = [
         {
+            accessorKey: 'name',
+            header: 'Name'
+        },
+        {
+            accessorKey: 'token',
+            header: 'Token'
+        },
+        {
             accessorKey: 'licensePlate',
             header: 'License'
         },
@@ -126,7 +134,7 @@ export default function VehicleTable() {
             />
 
             {/* Table */}
-            <table className='w-full border-2'>
+            <table className='w-full border-2 text-center'>
                 <thead>
                     {table.getHeaderGroups().map((hg) => (
                         <tr key={hg.id}>

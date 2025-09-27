@@ -17,7 +17,7 @@ export default function OverviewComponents() {
 
     return (
         <div className='bg-white dark:bg-gray-800 rounded-3xl w-full md:max-w-11/12 mx-auto shadow-lg p-6 mb-8 transition-all duration-300'>
-            <h2 className="text-xl md:text-3xl font-semibold mb-2 text-gray-800 dark:text-gray-200">Dashboard Overview</h2>
+            <h2 className="text-xl md:text-3xl font-semibold mb-2 text-gray-800 dark:text-gray-200">slots Overview</h2>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6'>
                 <div className="bg-blue-50 dark:bg-blue-900 p-5 rounded-2xl shadow-sm border border-blue-200 dark:border-blue-700 flex flex-col items-center">
                     <Car size={32} className="text-blue-500 mb-2" />

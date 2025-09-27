@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
     try {
-        const { vehicleType, licensePlate } = await req.json();
+        const { vehicleType, licensePlate, name, number, email } = await req.json();
 
         if (!vehicleType || !licensePlate) {
             return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -17,6 +17,17 @@ export const POST = async (req) => {
             return NextResponse.json({ error: "Invalid vehicle type" }, { status: 400 });
         }
 
+        let token = ""
+        const vehicleCollection = await dbConnect(collectionNameObj.vehiclesCollection);
+
+        while (true) {
+            token = Math.floor(100000 + Math.random() * 900000).toString();
+            const isExits = await vehicleCollection.findOne({ token });
+            if (!isExits) {
+                break;
+            }
+        }
+
         let status = 'parked';
         if (slots.availableSlots <= 0) {
             status = 'waiting'
@@ -24,6 +35,10 @@ export const POST = async (req) => {
         const vehicleData = {
             vehicleType,
             licensePlate,
+            name,
+            email,
+            number,
+            token,
             entryTime: new Date(),
             parkedTime: status === "parked" ? new Date() : null,
             exitTime: null,
@@ -32,7 +47,7 @@ export const POST = async (req) => {
         };
 
 
-        const result = await (await dbConnect(collectionNameObj.vehiclesCollection)).insertOne(vehicleData);
+        const result = await vehicleCollection.insertOne(vehicleData)
         if (status === 'parked') {
             await (await dbConnect(collectionNameObj.settingsCollection)).updateOne(
                 { _id: "slots-info" },
