@@ -6,7 +6,6 @@ import React from 'react'
 
 export default function Sidebar() {
     const session = useSession();
-    console.log(session?.data?.user?.role);
     return (
         <div className='flex flex-col justify-center items-center'>
             <Link href='/' className='cursor-pointer'>
