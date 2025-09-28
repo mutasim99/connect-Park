@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button'
 import LoadingSpinner from '@/app/components/LoadingSpinner'
 import { imageUpload } from '@/lib/imageUpload'
 import { registerUser } from '@/app/actions/auth/registerUser'
+import SocialLogin from '@/app/components/SocialLogin'
+import Link from 'next/link'
 
 export default function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -149,6 +151,13 @@ export default function RegisterForm() {
                             {loading ? <LoadingSpinner></LoadingSpinner> : 'Register'}
                         </Button>
                     </form>
+
+                    <hr className='my-4' />
+                    <SocialLogin />
+                    <hr className='my-4' />
+                    <div className='flex justify-center items-center'>
+                        <Link href='/login'>Already have an account?<span className='underline'>LogIn</span> </Link>
+                    </div>
                 </CardContent>
             </Card>
         </motion.div>

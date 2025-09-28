@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form"
 import { signIn } from 'next-auth/react'
 import LoadingSpinner from '@/app/components/LoadingSpinner'
 import { useRouter } from 'next/navigation'
+import SocialLogin from '@/app/components/SocialLogin'
+import Link from 'next/link'
 
 export default function LogInForm() {
     const [loading, setLoading] = useState(false);
@@ -86,6 +88,13 @@ export default function LogInForm() {
                             </Button>
                         </div>
                     </form>
+
+                    <hr className='my-4' />
+                    <SocialLogin />
+                    <hr className='my-4' />
+                    <div className='flex justify-center items-center'>
+                        <Link href='/register' className='text-gray-300'>Don't have any Account? <span className='underline'>Register</span></Link>
+                    </div>
                 </CardContent>
             </Card>
         </motion.div>
