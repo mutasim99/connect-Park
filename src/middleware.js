@@ -13,7 +13,7 @@ export const middleware = async (req) => {
         return NextResponse.redirect(new URL(`/api/auth/signin?callbackUrl=${callbackUrl}`, req.url))
     }
 
-    const employeeRouts = ['/dashboard/overview', '/dashboard/addVehicle']
+    const employeeRouts = ['/dashboard/overview', '/dashboard/addVehicle', '/dashboard/admin-dashboard']
     const userRoutes = ['/dashboard/my-profile']
 
     if (employeeRouts.some(route => pathname.startsWith(route)) && token.role !== 'employee') {
