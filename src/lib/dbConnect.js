@@ -11,7 +11,7 @@ let client;
 let clientPromise;
 
 if (!global._mongoClientPromise) {
-  client = new MongoClient(process.env.MONGODB_URL, {
+  client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_URL, {
     serverApi: {
       version: ServerApiVersion.v1,
       strict: true,

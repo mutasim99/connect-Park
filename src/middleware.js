@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 
 
 export const middleware = async (req) => {
-    const token = await getToken({ req });
+    const token = await getToken({
+        req,
+        secureCookie: process.env.NODE_ENV === 'production' ? true : false
+    });
     const { pathname } = req.nextUrl;
     const isUserRoute = req.nextUrl.pathname.startsWith('/dashboard');
 
