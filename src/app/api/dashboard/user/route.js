@@ -1,6 +1,4 @@
 'use server'
-
-import { authOptions } from "@/lib/authOptions";
 import { collectionNameObj, dbConnect } from "@/lib/dbConnect";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth"
@@ -15,8 +13,8 @@ export const GET = async () => {
         if (!email) {
             return NextResponse.json({ error: "No user found" }, { status: 404 })
         }
-        const vehicle = await vehicleCollection.findOne({ email: email });
-        
+        const vehicle = await vehicleCollection.findOne({ email: email ,  status: { $ne:'exited' } } );
+
         const objectId = new ObjectId(session?.user?.id);
         const createdAt = objectId.getTimestamp().toLocaleDateString();
         return NextResponse.json({ vehicle, createdAt })
