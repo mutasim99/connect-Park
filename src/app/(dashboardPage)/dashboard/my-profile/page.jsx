@@ -10,18 +10,21 @@ import { Separator } from '@/components/ui/separator';
 export default function MyProfile() {
     const session = useSession();
     const [vehicle, setVehicle] = useState(null);
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!session?.data?.user?.email) return;
-            try {
-                const res = await axios.get('/api/dashboard/user')
-                setVehicle(res.data)
-            } catch (error) {
-                console.log(error);
+
+    const parkedTime = new Date(vehicle?.vehicle?.parkedTime);
+    const localTIme = parkedTime.toLocaleString()
+        useEffect(() => {
+            const fetchData = async () => {
+                if (!session?.data?.user?.email) return;
+                try {
+                    const res = await axios.get('/api/dashboard/user')
+                    setVehicle(res.data)
+                } catch (error) {
+                    console.log(error);
+                }
             }
-        }
-        fetchData();
-    }, [session]);
+            fetchData();
+        }, [session]);
     return (
         <div className='max-w-5xl mx-auto space-y-10 p-6'>
             <Card className='relative overflow-hidden rounded-2xl shadow-lg border-0 bg-gradient-to-r from-[#2F6260] to-[#084350] text-white'>
@@ -81,6 +84,10 @@ export default function MyProfile() {
                                     </div>
                                     <div>
                                         <p className='font-medium text-gray-500'>Parked Token: {vehicle?.vehicle?.token || "N/A"}</p>
+                                    </div>
+                                    <div>
+                                        <p className='font-medium text-gray-500'>
+                                            parkedTime: {localTIme || "N/A"}</p>
                                     </div>
                                 </div>
                             </CardContent>
