@@ -1,5 +1,6 @@
 'use client'
-import { Car, Wrench } from 'lucide-react'
+import {  Wrench } from 'lucide-react'
+import { PiTruckFill } from "react-icons/pi";
 import { ImStatsDots } from "react-icons/im";
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -17,7 +18,7 @@ export default function Sidebar() {
                     session?.data?.user?.role === 'employee' && (
                         <ul className='space-y-4'>
                             <li><Link href='/dashboard/overview' className='flex items-center gap-2.5'><Wrench size={18} color='#329533' />Overview</Link></li>
-                            <li><Link href='/dashboard/addVehicle' className='flex items-center gap-2.5'><Car color='#d01616' size={18} />Add vehicle</Link></li>
+                            <li><Link href='/dashboard/addVehicle' className='flex items-center gap-2.5'><PiTruckFill  className='text-red-500' />Add vehicle</Link></li>
                             <li><Link href='/dashboard/admin-dashboard' className='flex items-center gap-2.5'><ImStatsDots  className='text-yellow-400'/>  Admin stats</Link></li>
                         </ul>
                     )
