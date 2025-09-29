@@ -35,24 +35,49 @@ export const authOptions = {
         signIn: '/login'
     },
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }) {
+        async signIn({ user, account }) {
             const { providerAccountId, provider } = account;
-            const { name, email: user_email, image, role } = user;
-            const payload = { name, email: user_email, image, providerAccountId, provider, role }
+            const { name, email: user_email, image } = user;
+            // const payload = { name, email: user_email, image, providerAccountId, provider, role }
             const userCollection = await dbConnect(collectionNameObj.userCollection);
-            const isExistingUser = await userCollection.findOne({ providerAccountId });
+            const isExistingUser = await userCollection.findOne({ email: user_email });
             if (!isExistingUser) {
-                const result = await userCollection.insertOne(payload)
+                const result = await userCollection.insertOne({
+                    name,
+                    email: user_email,
+                    image,
+                    providerAccountId,
+                    provider,
+                    role: 'user',
+                })
             }
             return true
         },
 
         async jwt({ token, user }) {
-            if (user) {
-                token.role = user.role || 'user';
+            const userCollection = await dbConnect(collectionNameObj.userCollection);
+
+
+            const email = user?.email || token?.email;
+
+
+            const dbUser = await userCollection.findOne({ email });
+
+
+            if (dbUser && !dbUser.role) {
+                await userCollection.updateOne(
+                    { email },
+                    { $set: { role: 'user' } }
+                );
+                dbUser.role = 'user';
             }
+
+            token.role = dbUser?.role || 'user';
+            token.email = dbUser?.email || email;
+
             return token;
         },
+
 
         async session({ session, token }) {
             if (token) {

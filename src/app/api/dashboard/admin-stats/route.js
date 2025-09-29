@@ -7,8 +7,8 @@ export const GET = async () => {
         const vehicleCollection = await dbConnect(collectionNameObj.vehiclesCollection);
 
         /* today starts and end */
-        const starOfToday = new Date();
-        starOfToday.setHours(0, 0, 0, 0);
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
 
         const endOfToday = new Date();
         endOfToday.setHours(23, 59, 59, 999);
@@ -20,7 +20,7 @@ export const GET = async () => {
         const todaysParked = await vehicleCollection.countDocuments(
             {
                 status: 'exited',
-                exitTime: { $gte: starOfToday, $lte: endOfToday }
+                exitTime: { $gte: startOfToday, $lte: endOfToday }
             }
 
         );
@@ -44,7 +44,7 @@ export const GET = async () => {
             {
                 $match: {
                     status: 'exited',
-                    exitTime: { $gte: starOfToday, $lte: endOfToday }
+                    exitTime: { $gte: startOfToday, $lte: endOfToday }
                 }
             },
             {

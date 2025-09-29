@@ -1,5 +1,5 @@
 'use client'
-import {  Wrench } from 'lucide-react'
+import { Wrench } from 'lucide-react'
 import { PiTruckFill } from "react-icons/pi";
 import { ImStatsDots } from "react-icons/im";
 import { useSession } from 'next-auth/react'
@@ -14,15 +14,33 @@ export default function Sidebar() {
                 <h2 className='text-xl font-bold'>Connect park</h2>
             </Link>
             <div className='mt-4'>
-                {
-                    session?.data?.user?.role === 'employee' && (
-                        <ul className='space-y-4'>
-                            <li><Link href='/dashboard/overview' className='flex items-center gap-2.5'><Wrench size={18} color='#329533' />Overview</Link></li>
-                            <li><Link href='/dashboard/addVehicle' className='flex items-center gap-2.5'><PiTruckFill  className='text-red-500' />Add vehicle</Link></li>
-                            <li><Link href='/dashboard/admin-dashboard' className='flex items-center gap-2.5'><ImStatsDots  className='text-yellow-400'/>  Admin stats</Link></li>
-                        </ul>
-                    )
-                }
+                <div>
+                    {
+                        session?.data?.user?.role === 'employee' && (
+                            <ul className='space-y-4'>
+
+                                <li><Link href='/dashboard/overview' className='flex items-center gap-2.5'><Wrench size={18} color='#329533' />Overview</Link></li>
+
+                                <li><Link href='/dashboard/addVehicle' className='flex items-center gap-2.5'><PiTruckFill className='text-red-500' />Add vehicle</Link></li>
+                            </ul>
+                        )
+                    }
+                </div>
+                <div>
+                    {
+                        session?.data?.user?.role === 'admin' && (
+                            <ul>
+
+                                <li><Link href='/dashboard/overview' className='flex items-center gap-2.5'><Wrench size={18} color='#329533' />Overview</Link></li>
+
+                                <li><Link href='/dashboard/addVehicle' className='flex items-center gap-2.5'><PiTruckFill className='text-red-500' />Add vehicle</Link></li>
+
+                                <li><Link href='/dashboard/admin-dashboard' className='flex items-center gap-2.5'><ImStatsDots className='text-yellow-400' />  Admin stats</Link></li>
+                                
+                            </ul>
+                        )
+                    }
+                </div>
             </div>
         </div>
     )

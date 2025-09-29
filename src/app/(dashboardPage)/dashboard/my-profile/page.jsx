@@ -2,7 +2,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import axios from 'axios';
-import { LuBadgeCheck } from "react-icons/lu";
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { Separator } from '@/components/ui/separator';
@@ -10,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 export default function MyProfile() {
     const session = useSession();
     const [vehicle, setVehicle] = useState(null);
-
+    console.log(session);
     const parkedTime = new Date(vehicle?.vehicle?.parkedTime);
     const localTIme = parkedTime.toLocaleString()
         useEffect(() => {
