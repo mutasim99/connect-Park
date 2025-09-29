@@ -7,10 +7,11 @@ export const middleware = async (req) => {
     const token = await getToken({
         req,
         secret: process.env.NEXTAUTH_SECRET,
-        secureCookie: process.env.NODE_ENV === 'production'
+        secureCookie: process.env.NODE_ENV === 'production' ? true : 'false'
     });
     const { pathname } = req.nextUrl;
     const isUserRoute = req.nextUrl.pathname.startsWith('/dashboard');
+
 
     if (!token && isUserRoute) {
         const callbackUrl = encodeURIComponent(req.nextUrl.pathname)
